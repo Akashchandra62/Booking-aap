@@ -44,3 +44,17 @@ export const deleteBooking = async (req, res) => {
   await Booking.findByIdAndUpdate(id, { isActive: false });
   res.json({ message: "Booking Deleted Successfully..." });
 };
+
+export const updateBooking = async (req, res) => {
+  const { id } = req.params;
+  let { model, bookedOn } = req.body;
+  bookedOn = new Date(bookedOn);
+  bookedOn.setDate(bookedOn.getDate() + 1);
+
+  const updated = await Booking.findByIdAndUpdate(
+    id,
+    { model, bookedOn },
+    { new: true }
+  );
+  res.json({ message: "Updated Successfully", updated });
+};
